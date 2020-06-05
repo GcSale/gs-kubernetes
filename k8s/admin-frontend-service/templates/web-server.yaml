@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+spec:
+  replicas: {{.Values.replicasCount}}
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: web-server-contentainer
+          image: {{.Values.image.name}}:{{.Values.image.tag}}
+          readinessProbe:
+            httpGet:
+              port: 5000
+              path: /
+            initialDelaySeconds: 1
+          livenessProbe:
+            httpGet:
+              port: 5000
+              path: /
+            initialDelaySeconds: 15

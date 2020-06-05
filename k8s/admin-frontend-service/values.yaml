@@ -1,0 +1,5 @@
+image:
+  name: docker.pkg.github.com/gcsale/gs-admin-client/gs-admin-client-image
+  tag: "0.0.7"
+
+replicasCount: 2

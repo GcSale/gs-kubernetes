@@ -1,0 +1,22 @@
+name: [Test] Deploy root service
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@v1'
+      with:
+        helm: 'helm3'
+        release: 'root-chart'
+        namespace: 'gcsale-test'
+        chart: 'k8s/root_app'
+        token: '${{ github.token }}'
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'

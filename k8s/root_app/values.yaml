@@ -1,0 +1,5 @@
+nginx-ingress:
+  controller:
+    watchNamespace: "{{.Release.Namespace}}"
+
+basicAuth: "gcsale:$apr1$du2MnczF$6Ybh9PJ6a2mPkjUx9GEfU/"

@@ -1,0 +1,13 @@
+postgresql:
+  nameOverride: dealer-postgres
+  postgresqlUsername: dealeruser
+  postgresqlPassword: w4F4r9DAN5a6BG5y
+  postgresqlDatabase: dealerdb
+  persistence:
+    size: 5Gi
+
+image:
+  name: docker.pkg.github.com/gcsale/dealer-service-backend/gs-dealer-backend-image
+  tag: "0.0.3"
+
+replicasCount: 2

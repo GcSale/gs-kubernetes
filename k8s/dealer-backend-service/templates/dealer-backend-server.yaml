@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dealer-backend-server
+spec:
+  replicas: {{.Values.replicasCount}}
+  selector:
+    matchLabels:
+      app: dealer-backend-server
+  template:
+    metadata:
+      labels:
+        app: dealer-backend-server
+      annotations:
+        checksum/config: {{ include (print $.Chart.Name "/templates/dealer-backend-config.yaml") . | sha256sum }}
+        checksum/db-secrets: {{ include (print $.Chart.Name "/templates/dealer-backend-db-secrets.yaml") . | sha256sum }}
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: dealer-backend-server-contentainer
+          image: {{.Values.image.name}}:{{.Values.image.tag}}
+          ports:
+            - containerPort: 8080
+              name: dealer-backend
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+            initialDelaySeconds: 15
+          envFrom:
+            - configMapRef:
+                name: dealer-backend-config
+            - secretRef:
+                name: dealer-backend-db-secrets

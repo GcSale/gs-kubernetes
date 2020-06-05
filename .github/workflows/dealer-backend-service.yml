@@ -1,0 +1,24 @@
+name: [Test] Deploy dealer backend service
+on:
+  repository_dispatch:
+    types: [gs-dealer-backend-released]
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@v1'
+      with:
+        helm: 'helm3'
+        release: 'dealer-backend-chart'
+        namespace: 'gcsale-test'
+        chart: 'k8s/dealer-backend-service'
+        token: '${{ github.token }}'
+        values: |
+          image:
+            tag: "${{ github.event.client_payload.version }}"
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'

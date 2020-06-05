@@ -1,0 +1,24 @@
+name: [Test] Deploy web app
+on:
+  repository_dispatch:
+    types: [gs-admin-client-released]
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@v1'
+      with:
+        helm: 'helm3'
+        release: 'admin-frontend-chart'
+        namespace: 'gcsale-test'
+        chart: 'k8s/admin-frontend-service'
+        token: '${{ github.token }}'
+        values: |
+          image:
+            tag: "${{ github.event.client_payload.version }}"
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
