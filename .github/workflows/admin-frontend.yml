@@ -1,4 +1,4 @@
-name: [Test] Deploy web app
+name: TEST Deploy web app
 on:
   repository_dispatch:
     types: [gs-admin-client-released]

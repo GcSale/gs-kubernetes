@@ -1,4 +1,4 @@
-name: [Test] Deploy dealer backend service
+name: TEST Deploy dealer backend service
 on:
   repository_dispatch:
     types: [gs-dealer-backend-released]

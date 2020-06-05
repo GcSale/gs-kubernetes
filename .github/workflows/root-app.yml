@@ -1,4 +1,4 @@
-name: [Test] Deploy root service
+name: TEST Deploy root service
 on:
   push:
     branches: ['master']
